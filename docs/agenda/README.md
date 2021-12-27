@@ -149,7 +149,7 @@ data() {
 ## Router
 
 ### Views Home => ListaEventos
-
+Cambiar el nombre del archivo
 #### Script
 ```js
  name: "ListaEventos",
@@ -158,7 +158,8 @@ data() {
 
 ```js
 import ListaEventos from "../views/ListaEventos.vue";
-
+```
+```js
 const routes = [
   {
     path: "/",
@@ -167,7 +168,7 @@ const routes = [
   },
 ```
 ### Router > index.js => SobreNosotros
-
+Cambiar archivo About
 ```js
   {
     path: "/sobre-nosotros",
@@ -228,7 +229,7 @@ const apiClient = axios.create({
 })
 
 export default {
-    getEvents(){
+    getEventos(){
        return apiClient.get('/eventos')
     }
 }
@@ -237,8 +238,12 @@ export default {
 
 #### Script
 ```js
+import ServiciosEventos from "@/servicios/ServiciosEventos.js"
+```
+
+```js
 created () {
-   ServicioEventos.getEvents()
+   ServiciosEventos.getEventos()
       .then(response => {
         this.eventos = response.data;
         console.log('eventos:', response.data)
@@ -248,7 +253,7 @@ created () {
       })
     }
 ```
-## Nuevo Componente
+## Nueva Vista DetallesEvento
 
 ### Servicio 
 Añadir
@@ -263,25 +268,27 @@ getEvento(id){
 #### Template
 ```html
 <template>
+    <div v-if="evento">
     <h1>{{ evento.titulo }}</h1>
-   <p>{{evento.hora}}  {{evento.fecha}} {{evento.localidad}}</p>
-   <p>{{evento.descripcion}}</p>
+    <p>{{ evento.hora }} {{ evento.fecha }} {{ evento.localidad }}</p>
+    <p>{{ evento.descripcion }}</p>
+    </div>
 </template>
 ```
 #### Script
 ```js
 <script>
-import ServicioEventos from '../services/ServicioEventos.js'
+import ServiciosEventos from "../servicios/ServiciosEventos.js"
 export default {
-    name: "DetallesEvento",
-    data () {
+      props: ['id'],
+        data() {
         return {
-            evento: null,
-            id: '01'
-        }    
-    },
+        evento: null,
+    }
+  },
     created () {
-   ServicioEventos.getEvento(this.id)
+      // ServicioEventos.getEvent(this.$route.params.id)
+   ServiciosEventos.getEvento(this.id)
       .then(response => {
         this.evento = response.data;
         console.log('evento:', response.data)
@@ -293,54 +300,17 @@ export default {
 }
 </script>
 ```
-### Router
-Añadir la ruta:
-```js
-{
-    path: "/detalles-evento/01",
-    name: "DetallesEvento",
-    component: () =>
-      import("../views/DetallesEvento.vue")
-  }
-```
-### Componentes TarjetaEvento
-
-#### Template
-
-```html
-  <router-link to="/detalles-evento/01">
-  <div class="tarjeta-evento">
-   <span>@ {{evento.hora}} on {{evento.fecha}}</span>
-   <h4>{{evento.titulo}}</h4>
-  </div>
-  </router-link>
-```
-
 ## Rutas dinámicas
 
 ### Router
 ```js
+{
   path: "/detalles-evento/:id",
   name: "DetallesEvento",
   props: true,
-```
-### Views DetallesEvento
-#### Template
-```html
-  <div v-if="evento">
-    <h1>{{ evento.titulo }}</h1>
-    <p>{{ evento.hora }} {{ evento.fecha }} {{ evento.localidad }}</p>
-    <p>{{ evento.descripcion }}</p>
-  </div>
-```
-#### Script
-```js
-  props: ['id'],
-  data() {
-    return {
-      evento: null
-    }
-  },
+  component: () =>
+    import("../views/DetallesEvento.vue")
+}
 ```
 ### Componente TarjetaEvento
 ```html
@@ -355,8 +325,15 @@ Añadir la ruta:
   }
   }
 ```
+```html
+  <router-link class="enlace-evento" :to="{ name: 'DetallesEvento', params: { id: evento.id }}">
 
-
-
+```
+```css
+.enlace-evento {
+  color: #2c3e50;
+  text-decoration: none;
+}
+```
 
 
