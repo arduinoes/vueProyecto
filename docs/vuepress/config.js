@@ -37,10 +37,11 @@ module.exports = {
     editLinkText: '',
     lastUpdated: false,
     nav: [
-      // { text: 'Sensores', link: '/sensores/' },
-      // { text: 'Pantallas', link: '/pantallas/' },
+      // 
+      // 
       // { text: 'Motores', link: '/motores/' },
       { text: 'Directivas', link: '/directivas/' },
+      { text: 'Esenciales', link: '/esenciales/' },
       { text: 'Agenda', link: '/agenda/' },
       { text: 'Canal Youtube', link: 'https://youtu.be/FAtC9YKy1Rk' }
     ],
